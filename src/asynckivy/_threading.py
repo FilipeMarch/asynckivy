@@ -27,8 +27,7 @@ async def run_in_thread(func, *, daemon=None):
     See :ref:`io-in-asynckivy` for details.
 
     .. warning::
-        When the caller Task is cancelled, the ``func`` will be left running because the
-        :mod:`threading` module does not provide any cancellation mechanism.
+        When the caller Task is cancelled, the ``func`` will be left running.
     '''
     ev = asyncgui.ExclusiveEvent()
     Thread(
@@ -56,8 +55,6 @@ async def run_in_executor(executor: ThreadPoolExecutor, func):
 
     .. warning::
         When the caller Task is cancelled, the ``func`` will be left running if it has already started.
-        This happens because :mod:`concurrent.futures` module does not provide a way to cancel a running function.
-        (See :meth:`concurrent.futures.Future.cancel`).
     '''
     ev = asyncgui.ExclusiveEvent()
     future = executor.submit(_wrapper, func, ev)
